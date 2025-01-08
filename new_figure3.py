@@ -119,9 +119,9 @@ xv, yv = "delta_G","delta_sigma"
 # filename_map = "data/extend_sweep_delta_both_SC_MAPS_7_3_fromG0.14_sigma7.7_maps_7_3_6nov.txt"
 # filename_shuf = "data/sweep_delta_SHUFFLED_SC_MAPS_7_3_fromG0.14_sigma7.7_maps_8_4_21oct_50iter.txt"
 
-filename_homo = "data/sweep_delta_homoW_fromG0.16_sigma7.68_maps_0_0_9dic24_50iter.txt"
-filename_map = "data/sweep_deltamaps_from_supposed_homoW_fromG0.16_sigma7.68_maps_7_3_9dic24_50iter.txt"
-filename_shuf = "data/sweep_deltaSHUFFLED_from_supposed_homoW_fromG0.16_sigma7.68_maps_8_4_9dic24_50iter.txt"
+filename_homo = "output/sweep_delta_homoW_fromG0.16_sigma7.68_maps_0_0_9dic24_50iter.txt"
+filename_map = "output/sweep_deltamaps_from_supposed_homoW_fromG0.16_sigma7.68_maps_7_3_9dic24_50iter.txt"
+filename_shuf = "output/sweep_deltaSHUFFLED_from_supposed_homoW_fromG0.16_sigma7.68_maps_8_4_9dic24_50iter.txt"
 
 output_homo = extract(filename_homo)
 output_map = extract(filename_map)
@@ -141,23 +141,6 @@ df_violin = pd.DataFrame()
 for s,st in enumerate(states):
     df_violin[st] = output_homo["violins_o"][s]
     
-    
-    
-#%% mats 
-
-with open('data/run_50seeds_output_homo_16dic.pickle', 'rb') as f:
-    dic = pickle.load(f)
-
-matts = {st:np.zeros((50,90,90)) for st in states}
-
-for key in dic.keys():
-    if key != "metainfo":
-        s,state = key
-        matts[state][s] = dic[key]["sFC"]
-        dic[key] = dic[key]
-        
-sim_matts = {st:matts[st].mean(axis=0) for st in states}
-emp_matts = {st:np.loadtxt(f"../../../analyze_empirical/mean_arctanhrho_filtered_{st}.txt") for st in states}
     
     
 #%% figure 
@@ -316,6 +299,6 @@ ax.legend(handles=patches,fontsize=legendsais,loc=(0.25,1),ncol=4)
 plt.tight_layout()
 plt.gcf().subplots_adjust(bottom=0.05)
 plt.show()
-plt.savefig("newfig3.svg",dpi=300)
+plt.savefig("figures/newfig3.png",dpi=300)
 # 
 

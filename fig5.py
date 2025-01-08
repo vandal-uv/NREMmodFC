@@ -26,21 +26,6 @@ colors = ["crimson","orange","forestgreen","navy"]
 
 mod_colors = ("tab:blue","tab:orange","tab:green")
 
-
-# mod = "shuf"
-# dic = {}
-# for i in range(81):
-#     with open(f"../data/run_50seeds_output_{mod}_16dic_rank{i}.pickle","rb") as f:
-#         subdic = pickle.load(f)    
-#     dic.update(subdic)
-    
-# # dic["metainfo"] = {st:50 for st in states}   
-# with open(f"data/run_50seeds_output_{mod}_16dic.pickle","wb") as f:
-#     pickle.dump(dic,f)
-
-# halt
-
-
 #%% cargamos los parametros optimos por estado 
 
 
@@ -60,20 +45,20 @@ optimals_shuf = {"W":  (0.16,0.0,7.68,0.0),
                  "N3":  (0.16,0.0,7.68,-0.04)}
 
 #%% load data, empirico, simulado hetero y simulado homo 
-with open('data/run_50seeds_output_homo_16dic.pickle', 'rb') as f:
+with open('output/run_50seeds_output_homo_16dic.pickle', 'rb') as f:
     dic_homo = pickle.load(f)
-with open('data/run_50seeds_output_map_16dic.pickle', 'rb') as f:
+with open('output/run_50seeds_output_map_16dic.pickle', 'rb') as f:
     dic_map = pickle.load(f)
-with open('data/run_50seeds_output_shuf_16dic.pickle', 'rb') as f:
+with open('output/run_50seeds_output_shuf_16dic.pickle', 'rb') as f:
     dic_shuf = pickle.load(f)
 
-with open('data/emp_15inds_output_16dic.pickle', 'rb') as f:
+with open('output/emp_15inds_output_16dic.pickle', 'rb') as f:
     dic_emp = pickle.load(f)
 
-emp_matts = {st:np.loadtxt(f"../mean_mat_{st}_8dic24.txt") for st in states}
+emp_matts = {st:np.loadtxt(f"input/mean_mat_{st}_8dic24.txt") for st in states}
 
-FCmap_in = np.load("../../maps/DIST_FC_LC.npy")
-FCmap_se = np.load("../../maps/DIST_FC_BF.npy")
+FCmap_in = np.load("input/maps/DIST_FC_LC.npy")
+FCmap_se = np.load("input/maps/DIST_FC_BF.npy")
 FCmap_in /= FCmap_in.max();FCmap_se /= FCmap_se.max()
 
 
@@ -394,69 +379,9 @@ ax.set_yticks((0,0.2,0.4,0.6),(0,0.2,0.4,0.6),fontsize=ticsais)
 ax.set_xticks((1,6,11,16),states,fontsize=labelsais)
 ax.tick_params(axis=u'x', which=u'both',length=0)
 ax.spines[['right', 'top']].set_visible(False)
-
-# mline = [mlines.Line2D([], [], color='black', marker=markers[i], ls='', label=mods[i]) for i in range(3)]
 ax.legend(handles=mline,fontsize=legendsais,markerscale=1.6)
-
-# sec = ax.secondary_xaxis(location=0)
-# sec.set_xticks((1,5,9,13), labels=[f"\n\n{st}" for st in states],fontsize=ticsais)
-# ax.spines[['right', 'top']].set_visible(False)
-
-
-#####################IDEA 2, 3 grupos para modalidad
-#Integration
-# Inds = []
-# ax = plt.subplot2grid((3,2),(2,0))
-# inds1 = np.arange(0,4,1)
-# datasets = [df_seeds[f"{st}_in_homo"].values for st in states]
-# plot_1d_mean_std_with_line(datasets, colors=colors,alpha=alfa,inds=inds1)
-
-# inds2 = 5+np.arange(0,4,1)
-# datasets = [df_seeds[f"{st}_in_map"].values for st in states]
-# plot_1d_mean_std_with_line(datasets, colors=colors,alpha=alfa,inds=inds2)
-
-# inds3 = 10+np.arange(0,4,1)
-# datasets = [df_seeds[f"{st}_in_shuf"].values for st in states]
-# plot_1d_mean_std_with_line(datasets, colors=colors,alpha=alfa,inds=inds3)
-
-# Inds = np.concatenate((inds1,inds2,inds3))
-# ax.set_ylabel("Correlation of Empirical\n& Simulated Integration",fontsize=labelsais)
-# ax.set_yticks((-0.2,0,0.2,0.4,0.6),(-0.2,0,0.2,0.4,0.6),fontsize=ticsais)
-# ax.set_xticks(Inds,3*states,fontsize=labelsais-4)
-# # ax.legend()
-# sec = ax.secondary_xaxis(location=0)
-# sec.set_xticks((inds1.mean(),inds2.mean(),inds3.mean()), labels=[f"\n{mod}" for mod in mods[:-1]],fontsize=ticsais)
-# ax.spines[['right', 'top']].set_visible(False)
-
-# ##Segregation
-# Inds = []
-# ax = plt.subplot2grid((3,2),(2,1))
-# inds1 = 0+ np.arange(0,4,1)
-# datasets = [df_seeds[f"{st}_se_homo"].values for st in states]
-# plot_1d_mean_std_with_line(datasets, colors=colors,alpha=alfa,inds=inds1)
-
-# inds2 = 5+np.arange(0,4,1)
-# datasets = [df_seeds[f"{st}_se_map"].values for st in states]
-# plot_1d_mean_std_with_line(datasets, colors=colors,alpha=alfa,inds=inds2)
-
-# inds3 = 10+np.arange(0,4,1)
-# datasets = [df_seeds[f"{st}_se_shuf"].values for st in states]
-# plot_1d_mean_std_with_line(datasets, colors=colors,alpha=alfa,inds=inds3)
-
-# Inds = np.concatenate((inds1,inds2,inds3))
-# ax.set_ylabel("Correlation of Empirical\n& Simulated Segregation",fontsize=labelsais)
-# ax.set_yticks((0,0.2,0.4,0.6),(0,0.2,0.4,0.6),fontsize=ticsais)
-# ax.set_xticks(Inds,3*states,fontsize=labelsais-4)
-# sec = ax.secondary_xaxis(location=0)
-# sec.set_xticks((inds1.mean(),inds2.mean(),inds3.mean()), labels=[f"\n{mod}" for mod in mods[:-1]],fontsize=ticsais)
-# ax.spines[['right', 'top']].set_visible(False)
-# ax.legend()
-
-
 plt.tight_layout()
-# plt.gcf().subplots_adjust(bottom=0.05)
-# plt.savefig("fig5.svg",dpi=300)
-
+plt.savefig("figures/fig5.png",dpi=300)
 #%%
 
 

@@ -90,14 +90,9 @@ states = ("W","N1","N2","N3")
 var2see = "euccorr"
 xv, yv = "delta_G","delta_sigma"
 
-# filename_homo = "data/final_refined_sweep_delta_both_WhomoNEW_fromG0.14_sigma7.7_maps_0_0_4nov_50iter.txt"
-# filename_map = "data/extend_sweep_delta_both_SC_MAPS_7_3_fromG0.14_sigma7.7_maps_7_3_6nov.txt"
-# filename_shuf = "data/sweep_delta_SHUFFLED_SC_MAPS_7_3_fromG0.14_sigma7.7_maps_8_4_21oct_50iter.txt"
-
-
-filename_homo = "data/sweep_delta_homoW_fromG0.16_sigma7.68_maps_0_0_9dic24_50iter.txt"
-filename_map = "data/sweep_deltamaps_from_supposed_homoW_fromG0.16_sigma7.68_maps_7_3_9dic24_50iter.txt"
-filename_shuf = "data/sweep_deltaSHUFFLED_from_supposed_homoW_fromG0.16_sigma7.68_maps_8_4_9dic24_50iter.txt"
+filename_homo = "output/sweep_delta_homoW_fromG0.16_sigma7.68_maps_0_0_9dic24_50iter.txt"
+filename_map = "output/sweep_deltamaps_from_supposed_homoW_fromG0.16_sigma7.68_maps_7_3_9dic24_50iter.txt"
+filename_shuf = "output/sweep_deltaSHUFFLED_from_supposed_homoW_fromG0.16_sigma7.68_maps_8_4_9dic24_50iter.txt"
 
 
 output_homo = extract(filename_homo)
@@ -187,6 +182,7 @@ for s,st in enumerate(states):
     ax.invert_yaxis()
         
 plt.tight_layout()
+plt.savefig("figures/SF1.png",dpi=300)
 plt.show()
 
 #%% solo los observables
@@ -289,59 +285,6 @@ for s,st in enumerate(states):
         plt.xticks([])
 plt.show()
 
-#%%
-
-def adjacent_values(vals, q1, q3):
-    upper_adjacent_value = q3 + (q3 - q1) * 1.5
-    upper_adjacent_value = np.clip(upper_adjacent_value, q3, vals[-1])
-
-    lower_adjacent_value = q1 - (q3 - q1) * 1.5
-    lower_adjacent_value = np.clip(lower_adjacent_value, vals[0], q1)
-    return lower_adjacent_value, upper_adjacent_value
-
-
-def set_axis_style(ax, labels,positions):
-    ax.set_xticks(positions, labels=labels)
-    ax.set_xlim(positions[0]-1, positions[-1] + 1)
-    ax.set_xlabel('mode')
-    
-positions = (0,1,2,5,6,7,10,11,12,15,16,17)    
-
-plt.figure(4)
-plt.clf()
-ax = plt.subplot(111)
-ax.set_ylabel("euccorr")
-for s,st in enumerate(states):
-    # df_o = pd.DataFrame.from_dict({"homo":vh[s],"map":vm[s],"shuf":vs[s]},orient="index").T ##para los nan
-    data = [vh[s],vm[s],vs[s]]
-    
-    position = positions[3*s:3*s+3]
-    parts = ax.violinplot(
-        data, showmeans=False, showmedians=False,
-        showextrema=False,positions=position)
-    
-    for pc in parts['bodies']:
-        pc.set_facecolor(colors[s])
-        pc.set_edgecolor('black')
-        pc.set_alpha(0.7)
-        
-    quartile1, medians, quartile3 = np.nanpercentile(data, [25, 50, 75], axis=1)
-    whiskers = np.array([
-        adjacent_values(sorted_array, q1, q3)
-        for sorted_array, q1, q3 in zip(data, quartile1, quartile3)])
-    whiskers_min, whiskers_max = whiskers[:, 0], whiskers[:, 1]
-    
-    # inds = np.arange(1, len(medians) + 1)
-    # inds=positions
-    ax.scatter(position, medians, marker='o', color='white', s=30, zorder=3)
-    ax.vlines(position, quartile1, quartile3, color='k', linestyle='-', lw=5)
-    ax.vlines(position, whiskers_min, whiskers_max, color='k', linestyle='-', lw=1)
-    
-    # set style for the axes
-labels = 4*["homo","map","shuf"]
-set_axis_style(ax, labels,positions)
-plt.show()
-    
 
 
 

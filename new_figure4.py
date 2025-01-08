@@ -113,13 +113,9 @@ states = ("W","N1","N2","N3")
 var2see = "euccorr"
 xv, yv = "delta_G","delta_sigma"
 
-# filename_homo = "data/final_refined_sweep_delta_both_WhomoNEW_fromG0.14_sigma7.7_maps_0_0_4nov_50iter.txt"
-# filename_map = "data/extend_sweep_delta_both_SC_MAPS_7_3_fromG0.14_sigma7.7_maps_7_3_6nov.txt"
-# filename_shuf = "data/sweep_delta_SHUFFLED_SC_MAPS_7_3_fromG0.14_sigma7.7_maps_8_4_21oct_50iter.txt"
-
-filename_homo = "data/sweep_delta_homoW_fromG0.16_sigma7.68_maps_0_0_9dic24_50iter.txt"
-filename_map = "data/sweep_deltamaps_from_supposed_homoW_fromG0.16_sigma7.68_maps_7_3_9dic24_50iter.txt"
-filename_shuf = "data/sweep_deltaSHUFFLED_from_supposed_homoW_fromG0.16_sigma7.68_maps_8_4_9dic24_50iter.txt"
+filename_homo = "output/sweep_delta_homoW_fromG0.16_sigma7.68_maps_0_0_9dic24_50iter.txt"
+filename_map = "output/sweep_deltamaps_from_supposed_homoW_fromG0.16_sigma7.68_maps_7_3_9dic24_50iter.txt"
+filename_shuf = "output/sweep_deltaSHUFFLED_from_supposed_homoW_fromG0.16_sigma7.68_maps_8_4_9dic24_50iter.txt"
 
 output_homo = extract(filename_homo)
 output_map = extract(filename_map)
@@ -143,13 +139,13 @@ for s,st in enumerate(states):
     
 #%% mats 
 
-with open('data/run_50seeds_output_homo_16dic.pickle', 'rb') as f:
+with open('output/run_50seeds_output_homo_16dic.pickle', 'rb') as f:
     dic_homo = pickle.load(f)
     
-with open('data/run_50seeds_output_map_16dic.pickle', 'rb') as f:
+with open('output/run_50seeds_output_map_16dic.pickle', 'rb') as f:
     dic_map = pickle.load(f)
     
-with open('data/run_50seeds_output_shuf_16dic.pickle', 'rb') as f:
+with open('output/run_50seeds_output_shuf_16dic.pickle', 'rb') as f:
     dic_shuf = pickle.load(f)
 
 homo_matts = {st:np.zeros((50,90,90)) for st in states}
@@ -167,13 +163,10 @@ for key in dic_homo.keys():
 homo_matts = {st:homo_matts[st].mean(axis=0) for st in states}
 map_matts = {st:map_matts[st].mean(axis=0) for st in states}
 shuf_matts = {st:shuf_matts[st].mean(axis=0) for st in states}
-emp_matts = {st:np.loadtxt(f"../../../analyze_empirical/mean_arctanhrho_filtered_{st}.txt") for st in states}
+emp_matts = {st:np.loadtxt(f"input/mean_mat_{st}_8dic24.txt") for st in states}
     
     
 #%% figure 
-from matplotlib.patches import FancyArrowPatch
-
-
 alfa = 0.6
 titlesais = 20
 labelsais = 18
@@ -239,6 +232,6 @@ for s,st in enumerate(states):
 plt.tight_layout()
 plt.gcf().subplots_adjust(bottom=0.05)
 plt.show()
-plt.savefig("newfig4.svg",dpi=300)
+plt.savefig("figures/newfig4.svg",dpi=300)
 # 
 
