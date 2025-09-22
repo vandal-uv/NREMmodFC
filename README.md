@@ -10,8 +10,8 @@ Steps for reproducing the results:
 1) Empirical BOLD signals were extracted using empirical/extract.py, and the corresponding timeseries are available in https://zenodo.org/records/16755776 . Empirical mean FC matrices were also generated there.
 2) Run optimize_SC_Hopf.py for optimizing the interhemispheric connections in the structural connectivity matrix. The output is SC_opti_25julio.txt
 3) Sweep the G and sigma parameters homogeneously in whole_sweep_both.py to generate FC matrices, and save the gof against all states (W,N1,N2,N3). This will be the baseline against which we compare goodness of fit of the "map" and "shuffle" modality of all states.
-   This step was run in a computing cluster, so the code is implemented to be run in slurm in multiple cores. The output has to be collapsed to a file like output/sweep_delta_homoW_fromG0.16_sigma7.68_maps_0_0_9dic24_50iter.txt
+   This step was run in a computing cluster, so the code is implemented to be run in slurm using multiple cores. The output has to be collapsed to a file like output/sweep_delta_homoW_fromG0.16_sigma7.68_maps_0_0_9dic24_50iter.txt
 4) Find the optimal for W and use it as a baseline for what is next (can be done in heatmaps.py). Run whole_sweep_both_maps.py for the "map" modality, i.e. with the DIST_LC_proj.npy and DIST_VAChT_feobv_hc18_aghourian.npy for NA and ACh, respectively (available in empirical/maps/). This will calculate the goodness of fit against all states using the heterogeneity maps. Collapse.
 5) Use whole_sweep_both_maps.py, now with the shuffled versions of the heterogeneity maps (also available in empirical/maps/), to obtain the goodness of fit of the model considering this control modality.
-6) Given the optimal parameters, integration and segregation parameters per node can be obtained in run_many_seeds.py
-7) The script that generate the figures were used to perform all comparisons that are reported in the manuscript.
+6) Given the optimal parameters, integration and segregation parameters per node can be obtained in run_many_seeds.py. Given the empirical FC matrices, empirical integration and segregation profiles can also be obtained here.
+7) The scripts that generate the figures were used to perform all comparisons that are reported in the manuscript.
