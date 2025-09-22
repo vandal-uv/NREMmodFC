@@ -12,7 +12,7 @@ Awake brain dynamics are maintained by various wake-promoting mechanisms, partic
 
 * Steps for reproducing the results: 
 
-1) Empirical BOLD signals were extracted using empirical/extract.py, and the corresponding timeseries are available in https://zenodo.org/records/16755776 . Empirical mean FC matrices were also generated there.
+1) Empirical BOLD signals were extracted using empirical/extract.py, and the corresponding timeseries are available in https://zenodo.org/records/16755776 . Empirical mean FC matrices were also calculated therein, and are available in empirical/mean_mat_*_8dic24.txt
 2) Run optimize_SC_Hopf.py for optimizing the interhemispheric connections in the structural connectivity matrix. The output is SC_opti_25julio.txt
 3) Sweep the G and sigma parameters homogeneously in whole_sweep_both.py to generate FC matrices, and save the gof against all states (W,N1,N2,N3). This will be the baseline against which we compare goodness of fit of the "map" and "shuffle" modality of all states.
    This step was run in a computing cluster, so the code is implemented to be run in slurm using multiple cores. The output has to be collapsed to a file like output/sweep_delta_homoW_fromG0.16_sigma7.68_maps_0_0_9dic24_50iter.txt
