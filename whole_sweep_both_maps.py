@@ -27,34 +27,43 @@ threads=int(os.environ['SLURM_ARRAY_TASK_MAX']) + 1
 n_iterations = 25
 n_init = 25
 
-this_G = 0.16
-this_sigma = 7.68
+this_G = 0.16#0.14#0.15#0.14# + (-0.02)*this_map1
+this_sigma = 7.68#7.7#7.65#7.7# + (0.14)*this_map2
 
-map_id1,map_id2 = 2,2 ##math the ids of the previous lists, 2,2 is shuffled
-out= f"output/temp/sweep_deltaSHUFFLED_from_homoW_fromG{this_G}_sigma{this_sigma}_maps_{map_id1}_{map_id2}_9dic24_{n_iterations}iter_from{n_init}_rank{rank}.txt"
-##to be collapsed later in "output/sweep_deltaSHUFFLED_from_homoW_fromG0.16_sigma7.68_maps_2_2_9dic24_50iter.txt"
+map_id1,map_id2 = 8,4 ##math the ids of the previous lists
+out= f"data/sweep_deltaSHUFFLED_from_supposed_homoW_fromG{this_G}_sigma{this_sigma}_maps_{map_id1}_{map_id2}_9dic24_{n_iterations}iter_from{n_init}_rank{rank}.txt"
 
-struct = np.loadtxt("SC_opti_25julio.txt")
-
+original_struct = np.loadtxt("../../structural/SC_opti_25julio.txt")
+struct = original_struct ##aquí está conectado el tálamo
 
 states = ("W","N1","N2","N3")
+# empFCW,empFCN1,empFCN2,empFCN3 = [np.loadtxt(f"../../analyze_empirical/mean_arctanhrho_filtered_{s}.txt") for s in states]
 empFCW,empFCN1,empFCN2,empFCN3 = [np.loadtxt(f"mean_mat_{s}_8dic24.txt") for s in states]
-map_loc = "empirical/maps/"
-
+map_loc = "../maps/"
 mapnames1 = ["HOMO",
+            "DIST_FC_BF",
+            "SHUFFLED_DIST_FC_BF",
+            "DIST_A4B2_flubatine_hc30_hillmer_tal_corrected",
+            "SHUFFLED_DIST_A4B2_flubatine_hc30_hillmer_tal_corrected",
+            "DIST_M1_lsn_hc24_naganawa",
+            "SHUFFLED_DIST_M1_lsn_hc24_naganawa",
             "DIST_VAChT_feobv_hc18_aghourian",
             "SHUFFLED_SYMM_DIST_VAChT_feobv_hc18_aghourian"]
-
+            
 mapnames2 = ["HOMO",
+            "DIST_FC_LC",
+            "SHUFFLED_DIST_FC_LC",
             "DIST_LC_proj",
-            "SHUFFLED_SYMM_DIST_LC_proj"]
+            "SHUFFLED_SYMM_DIST_LC_proj",
+            "DIST_NAT_MRB_hc77_ding",
+            "SHUFFLED_DIST_NAT_MRB_hc77_ding"]
 
 namemap1 = mapnames1[map_id1]
 if namemap1 == "HOMO":
     this_map1 = np.ones(90) ##caso homogeneo simplemente aumenta G
 else:
     this_map1 = np.load(map_loc+namemap1+".npy")
-this_map1 = this_map1/this_map1.mean() #we normalize mean to 1
+this_map1 = this_map1/this_map1.mean() #we normalize to 1
 
 
 namemap2 = mapnames2[map_id2]
@@ -87,8 +96,7 @@ time = wc.timeSim[::wc.downsamp]
 
 
 #%% simulation
-
-#note: this is a zoomed in version of the ranges mentioned in the manuscript
+# delta_G_vals = np.linspace(-0.19,0.21,20,endpoint=False)
 delta_G_vals = np.linspace(-0.1,0.3,20,endpoint=False)
 delta_sigma_vals = np.linspace(-0.2,0.2,20,endpoint=False)
 # delta_sigma_vals = np.linspace(-0.2,0.2,20,endpoint=False)
