@@ -1,11 +1,13 @@
 # NREMmodFC
-Wilson-Cowan implementation for the testing of NA and ACh FC modulation hypotheses.
+Wilson-Cowan implementation for the testing of NA and ACh NREM-FC modulation hypotheses.
 
-Abstract: 
+* Abstract: 
 
 Awake brain dynamics are maintained by various wake-promoting mechanisms, particularly the neuromodulators Acetylcholine (ACh) and Noradrenaline (NA), whose levels naturally decrease during the transition to sleep. The interaction between these neurotransmitters and their combined influence on brain connectivity during NREM sleep stages remains unclear. Previous models have considered the effects of these neurotransmitters, but typically in isolation or only during deep sleep. In this study, we employ a Whole Brain model to investigate how changes in brain neurochemistry during NREM sleep, specifically involving ACh and NA, affect functional brain connectivity. Using a Wilson-Cowan whole brain model informed by an empirical connectome and a heterogeneous receptivity map of neuromodulators, we explore these dynamics. Initial Functional Connectivity analysis reveals distinct connectivity changes: a decrease in Locus Coeruleus (LC) connectivity with the cortex during N2 and N3, and a decrease in Basal Forebrain (BF) connectivity with the cortex during N3. Additionally, compared to W, there is a transition to a more integrated state in N1 and a more segregated state in N3. We examine this phenomenon using a biophysical model, adjusting global coupling and local input-output slope parameters for ACh and NA, respectively. When these parameters vary heterogeneously based on BF or LC priors, the model's fit to all stages FC improves, demonstrating that the region-specific distribution of these neurotransmitters is crucial for explaining their effects on brain Functional Connectivity. This work enhances our understanding of neurotransmitters' roles in modulating sleep stages and their significant contribution to brain state transitions between different states of consciousness, both in health and disease.
 
-Steps for reproducing the results: 
+*Summary: Analyzing average whole brain FC matrices of 15 individuals in W and NREM substages, we report a fluctuation in the integration and segregation profile across sleep stages. We fitted a model to these matrices varying the local coupling and input-output slope of each node, in a homogeneous way and also using NA and ACh proxy maps. We found a general improvement in the goodness of fit using these proxys for NA and ACh down-regulation in sleep, compared to homogeneous and shuffled-map modulation modalities.
+
+*Steps for reproducing the results: 
 
 1) Empirical BOLD signals were extracted using empirical/extract.py, and the corresponding timeseries are available in https://zenodo.org/records/16755776 . Empirical mean FC matrices were also generated there.
 2) Run optimize_SC_Hopf.py for optimizing the interhemispheric connections in the structural connectivity matrix. The output is SC_opti_25julio.txt
