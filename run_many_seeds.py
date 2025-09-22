@@ -30,6 +30,7 @@ states = ("W","N1","N2","N3")
 # state = "N1"
 
 ##formato (G,delta_G,sigmaE,delta_sigmaE)
+########obtained from heatmaps.py
 optimals_homo = {"W":  (0.16,0.0,7.68,0.0),
                  "N1": (0.16,0.04,7.68,0.0),
                  "N2": (0.16,0.0,7.68,0.0), 
@@ -47,16 +48,17 @@ optimals_shuf = {"W":  (0.16,0.0,7.68,0.0),
 
 modality = "map"
 
+map_folder = "empirical/maps/"
 if modality == "homo":
     ach_dist = np.ones(90)
     na_dist = np.ones(90)
 elif modality =="map":
-    ach_dist = np.load("../maps/DIST_VAChT_feobv_hc18_aghourian.npy")
-    na_dist = np.load("../maps/DIST_LC_proj.npy")
+    ach_dist = np.load(map_folder+"DIST_VAChT_feobv_hc18_aghourian.npy")
+    na_dist = np.load(map_folder+"DIST_LC_proj.npy")
 
 elif modality == "shuf":
-    ach_dist = np.load("../maps/SHUFFLED_SYMM_DIST_VAChT_feobv_hc18_aghourian.npy")
-    na_dist = np.load("../maps/SHUFFLED_SYMM_DIST_LC_proj.npy")
+    ach_dist = np.load(map_folder+"SHUFFLED_SYMM_DIST_VAChT_feobv_hc18_aghourian.npy")
+    na_dist = np.load(map_folder+"SHUFFLED_SYMM_DIST_LC_proj.npy")
 
 ach_dist = ach_dist/ach_dist.mean() ##seteamos media a 1
 na_dist = na_dist/na_dist.mean()
@@ -65,24 +67,14 @@ n_iterations = 50
 n_init = 0
 
 mapnames1 = ["HOMO",
-            "DIST_FC_BF",
-            "SHUFFLED_DIST_FC_BF",
-            "DIST_A4B2_flubatine_hc30_hillmer_tal_corrected",
-            "SHUFFLED_DIST_A4B2_flubatine_hc30_hillmer_tal_corrected",
-            "DIST_M1_lsn_hc24_naganawa",
-            "SHUFFLED_DIST_M1_lsn_hc24_naganawa",
             "DIST_VAChT_feobv_hc18_aghourian",
-            "SHUFFLED_DIST_VAChT_feobv_hc18_aghourian"]
-            
-mapnames2 = ["HOMO",
-            "DIST_FC_LC",
-            "SHUFFLED_DIST_FC_LC",
-            "DIST_LC_proj",
-            "SHUFFLED_DIST_LC_proj",
-            "DIST_NAT_MRB_hc77_ding",
-            "SHUFFLED_DIST_NAT_MRB_hc77_ding"]
+            "SHUFFLED_SYMM_DIST_VAChT_feobv_hc18_aghourian"]
 
-struct = np.loadtxt("../../structural/SC_opti_25julio.txt")
+mapnames2 = ["HOMO",
+            "DIST_LC_proj",
+            "SHUFFLED_SYMM_DIST_LC_proj"]
+
+struct = np.loadtxt("SC_opti_25julio.txt")
 # struct = utils.sub_weight(original_struct, 1) ##aquí está conectado el tálamo
 empFCW,empFCN1,empFCN2,empFCN3 = [np.loadtxt(f"../../analyze_empirical/mean_arctanhrho_filtered_{s}.txt") for s in states]
 wc.P = 0.4
@@ -149,6 +141,10 @@ for sim,cuatrio in enumerate(sims):
     gc.collect()
 gc.collect()
 
-outfile = f'data/run_50seeds_output_{modality}_16dic_rank{rank}.pickle'
+outfile = f'output/temp/run_50seeds_output_{modality}_16dic_rank{rank}.pickle'
 with open(outfile, 'wb') as f: #cargamos FCs
-            pickle.dump(save_dic,f)
+    pickle.dump(save_dic,f)
+
+##this was done also with empirical matrices, but using 15 individuals instead of 50 seeds
+##this is done in generate_plots_fig1
+##then it is collapsed in "output/run_50seeds_output_{modality}_16dic.pickle"

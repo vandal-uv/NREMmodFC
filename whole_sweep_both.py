@@ -27,27 +27,18 @@ threads=int(os.environ['SLURM_ARRAY_TASK_MAX']) + 1
 n_iterations = 50
 n_init = 0
 
-# delta_G_per_state = (0,0.04,0)
-# delta_sigma_per_state = (0,0,-0.06)
+this_sigma,this_G = 7.68,0.16 ##W optimal, obtained after exploration
+out = "output/temp/sweep_delta_homoW_fromG0.16_sigma7.68_maps_0_0_9dic24_{}iter_from{}_rank{}".format(n_iterations,n_init,rank)
+##note, we then concatenate everything together in the file "empirical/sweep_delta_homoW_fromG0.16_sigma7.68_maps_0_0_9dic24_50iter.txt"
 
-# this_sigma = 7.7
-# this_G = 0.14
-this_sigma,this_G = 7.66,0.16
-
-out= "data/recenter_sweep_delta_both_fromG0.16_sigma7.66_manymaps_8dic24_{}iter_from{}_rank{}.txt".format(n_iterations,n_init,rank)
-
-original_struct = np.loadtxt("../../structural/SC_opti_25julio.txt")
-struct = utils.sub_weight(original_struct, 1) ##aquí está conectado el tálamo
+struct = np.loadtxt("SC_opti_25julio.txt")
 
 states = ("W","N1","N2","N3")
-# empFCW,empFCN1,empFCN2,empFCN3 = [np.loadtxt(f"../../analyze_empirical/mean_arctanhrho_filtered_{s}.txt") for s in states]
-empFCW,empFCN1,empFCN2,empFCN3 = [np.loadtxt(f"mean_mat_{s}_8dic24.txt") for s in states]
+empFCW,empFCN1,empFCN2,empFCN3 = [np.loadtxt(f"empirical/mean_mat_{s}_8dic24.txt") for s in states]
 
 wc.P = 0.4
 wc.rhoE = 0.18
 wc.CM = struct
-
-
 
 wc.tTrans1=1  # simulation to remove transient
 wc.tTrans2=400
@@ -62,8 +53,9 @@ time = wc.timeSim[::wc.downsamp]
 
 
 #%% simulation
-delta_G_vals = np.linspace(-0.1,0.3,20,endpoint=False)
-delta_sigma_vals = np.linspace(-0.2,0.2,20,endpoint=False)
+#note: this is a zoomed in version of the ranges mentioned in the manuscript
+delta_G_vals = np.linspace(-0.1,0.5,20,endpoint=False)
+delta_sigma_vals = np.linspace(-1,1,20,endpoint=False)
 
 seeds = np.array(range(n_init,n_init+n_iterations)) 
 sims = list(itertools.product(seeds,delta_G_vals,delta_sigma_vals))
