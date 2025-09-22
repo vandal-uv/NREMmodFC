@@ -14,4 +14,4 @@ Steps for reproducing the results:
 4) Find the optimal for W and use it as a baseline for what is next (can be done in heatmaps.py). Run whole_sweep_both_maps.py for the "map" modality, i.e. with the DIST_LC_proj.npy and DIST_VAChT_feobv_hc18_aghourian.npy for NA and ACh, respectively (available in empirical/maps/). This will calculate the goodness of fit against all states using the heterogeneity maps. Collapse.
 5) Use whole_sweep_both_maps.py, now with the shuffled versions of the heterogeneity maps (also available in empirical/maps/), to obtain the goodness of fit of the model considering this control modality.
 6) Given the optimal parameters, integration and segregation parameters per node can be obtained in run_many_seeds.py. Given the empirical FC matrices, empirical integration and segregation profiles can also be obtained here.
-7) The scripts that generate the figures were used to perform all comparisons that are reported in the manuscript.
+7) The scripts that generate the figures were used to calculate all comparisons that are reported in the manuscript.
